@@ -24,4 +24,15 @@ $app->get('/blog', function() use ($blogPosts){
 	return $output;
 });
 
+// define uma rota dinâmica com uma parte variável
+$app->get('/blog/show/{id}', function(Silex\Application $app, $id) use ($blogPosts){
+	if (!isset($blogPosts[$id])){
+		$app->abort(404, "O post $id não existe!");
+	}
+
+	$post = $blogPosts[$id];
+
+	return sprintf('<h1>%s</h1><p>%s</p>', $post['title'], $post['body']);
+});
+
 $app->run();
